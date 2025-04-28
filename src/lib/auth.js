@@ -1,6 +1,7 @@
 import axios from "axios";
 import { PUBLIC_TIL_GOOGLE_CLIENT_ID, PUBLIC_TIL_SERVER_URL, PUBLIC_TIL_FRONT_URL } from '$env/static/public';
 import {get, writable} from "svelte/store";
+import { goto } from '$app/navigation';
 
 export const token = writable("");
 export const currentUser = writable({})
@@ -34,6 +35,7 @@ export function checkAuth() {
 
     // Check if user is authenticated or not
     if(localStorage.getItem("token") !== null) {
+			// Run token renew (maybe very long if we are google-blacklisted...)
         axios.get(`${PUBLIC_TIL_SERVER_URL}/renew`, {headers: {Authorization: localStorage.getItem("token")}})
             .then(response => {
                 localStorage.setItem("token", response.headers.get("authorization"));
@@ -48,6 +50,7 @@ export function checkAuth() {
             .then(res => {
                 localStorage.setItem("token", res.headers.get("authorization"));
                 token.set(res.headers.get("authorization"));
+								goto("/")
             })
             .catch(() => {
                 window.location.replace(googleUrl)

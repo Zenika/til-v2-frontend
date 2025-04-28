@@ -213,10 +213,18 @@ li select {
 
 .card-title .far, .card-title .fas, .delete-icon .far, .delete-icon .fas {
     font-size: 24px;
-    padding: 9px 0;
+    padding: 9px 0 9px 9px;
     color: rgb(246, 65, 84);
     cursor: pointer;
     transition-duration: 0.5s;
+}
+
+.article-image {
+    width: 100%;
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
 }
 
 .card-title .far:hover, .card-title .fas:hover, .delete-icon .far:hover, .delete-icon .fas:hover {

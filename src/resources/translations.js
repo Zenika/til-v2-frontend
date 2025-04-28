@@ -30,7 +30,8 @@ export default {
             lang: "Langue :",
             tags: "Tags :",
             comment: "Commentaire additionnel :",
-            create_button: "Ajouter le contenu"
+            create_button: "Ajouter le contenu",
+            deleted: "Article supprimé"
         },
         bookmarks: {
             added: "Article ajouté aux favoris !",
@@ -96,7 +97,8 @@ export default {
             lang: "Language:",
             tags: "Tags:",
             comment: "Additional comment:",
-            create_button: "Publish content"
+            create_button: "Publish content",
+            deleted: "Content deleted"
         },
         bookmarks: {
             added: "Post added to bookmarks!",
