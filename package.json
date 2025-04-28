@@ -21,6 +21,7 @@
 		"vite": "^6.2.5"
 	},
 	"dependencies": {
+		"@sveltejs/adapter-static": "^3.0.8",
 		"axios": "^1.8.4",
 		"eventsource": "^3.0.6",
 		"konami": "^1.7.0",
