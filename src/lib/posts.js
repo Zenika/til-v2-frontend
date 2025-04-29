@@ -9,9 +9,9 @@ import { getTags } from '$lib/tags.js';
 import { EventSource } from 'eventsource';
 
 export const posts = writable([]);
-export const loading = writable(false);
-let selectedTags = [];
+export const selectedTags = writable([]);
 
+let loading = false;
 let totalPages = 1;
 let retrievedPages = 0;
 let eventSrc;
@@ -20,8 +20,15 @@ currentUser.subscribe((newUser) => {
 	if (newUser.id !== '') {
 		retrievedPages = 0;
 		posts.set([]);
-		cleanAndLoad(newUser.automatic_tags_filter);
+		selectedTags.set(newUser.automatic_tags_filter);
 	}
+});
+
+selectedTags.subscribe(() => {
+	posts.set([]);
+	totalPages = 1;
+	retrievedPages = 0;
+	getNextPage()
 });
 
 token.subscribe((newToken) => {
@@ -52,7 +59,7 @@ token.subscribe((newToken) => {
 
 		eventSrc.addEventListener('created', (article) => {
 			let data = JSON.parse(article.data);
-			if (selectedTags.length === 0 || data.tags.some((e) => selectedTags.includes(e))) {
+			if (get(selectedTags).length === 0 || data.tags.some((e) => get(selectedTags).includes(e))) {
 				let newPosts = get(posts);
 				newPosts.unshift(data);
 				posts.set(newPosts);
@@ -61,36 +68,12 @@ token.subscribe((newToken) => {
 	}
 });
 
-export function cleanAndLoad(tags) {
-	posts.set([]);
-	totalPages = 1;
-	retrievedPages = 0;
-	getPostPage(0, tags);
+export function getNextPage() {
+	if(!loading && get(token) !== '') {
+		getPostPage(retrievedPages, get(selectedTags));
+	}
 }
 
-export function getPostPage(page, tags) {
-	selectedTags = tags === undefined ? [] : tags;
-	if (page === 0) {
-		loading.set(true);
-	}
-	if (page < totalPages && page >= retrievedPages && get(token) !== '') {
-		retrievedPages = page + 1;
-		axios
-			.get(
-				`${PUBLIC_TIL_SERVER_URL}/posts?page=${page}${tags && tags.length > 0 ? '&tags=' + tags.join(',') : ''}`,
-				{ headers: { Authorization: get(token) } }
-			)
-			.then((res) => {
-				let newPosts = get(posts);
-				newPosts.push(...res.data.items);
-				posts.set(newPosts);
-				totalPages = res.data.total_pages;
-			})
-			.finally(() => {
-				loading.set(false);
-			});
-	}
-}
 
 export function deletePost(id) {
 	axios
@@ -133,4 +116,26 @@ export function createPost(title, link, lang, tags, content) {
 				position: 'top-right'
 			});
 		});
+}
+
+
+function getPostPage(page, tags) {
+	if (page < totalPages && page >= retrievedPages) {
+		loading = true;
+		retrievedPages = page + 1;
+		axios
+			.get(
+				`${PUBLIC_TIL_SERVER_URL}/posts?page=${page}${tags && tags.length > 0 ? '&tags=' + tags.join(',') : ''}`,
+				{ headers: { Authorization: get(token) } }
+			)
+			.then((res) => {
+				let newPosts = get(posts);
+				newPosts.push(...res.data.items);
+				posts.set(newPosts);
+				totalPages = res.data.total_pages;
+			})
+			.finally(() => {
+				loading = false;
+			})
+	}
 }

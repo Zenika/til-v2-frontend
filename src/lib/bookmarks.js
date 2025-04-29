@@ -10,8 +10,6 @@ export const  bookmarks = writable([]);
 token.subscribe(newToken => {
     if(newToken !== "") {
         getBookmarks()
-    } else {
-        bookmarks.set([])
     }
 })
 
