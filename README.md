@@ -1,38 +1,32 @@
-# sv
+# Today I Learned (TiL) - v2 (frontend)
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+TIL is a simple software that aim to enable article and reflexion-sharing across all Zenika agencies in the world. It
+acts as an aggregator (as
+daily.dev can do), but on-premises and with filters on content to avoid being spammed with news that don't interest us.
 
-## Creating a project
+**This project is currently Work in progress**.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Getting started
 
-```bash
-# create a new project in the current directory
-npx sv create
+### Developer tools
 
-# create a new project in my-app
-npx sv create my-app
-```
+If you want to develop TiL, the best way is to install NodeJS 18> on your computer, then run `npm install ; npm run dev`. The client will start on
+port 5173.
 
-## Developing
+### Docker
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+If you simply want to run the application, Docker is the best way to do. Simply run `docker build -t til-front:latest .`, and
+run it! Full configuration reference below.
 
-```bash
-npm run dev
+## Configuration
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+All the configuration is done through environment variables. There is only one variable to set:
 
-## Building
+* **(Mandatory)** `PUBLIC_TIL_SERVER_URL`: The base URL (**without the leading /**) to the backend. In development, you can set it in
+  `.env.development` file. The `.env` file must stay at `/api`, because we are using a Nginx reverse proxy on production.
 
-To create a production version of your app:
+## Features
 
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+* CRUD to TIL API
+* SSE (Server-sent events) to the frontend to refresh the post list automatically
+* Settings saved in local storage
