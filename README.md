@@ -23,7 +23,8 @@ run it! Full configuration reference below.
 All the configuration is done through environment variables. There is only one variable to set:
 
 * **(Mandatory)** `PUBLIC_TIL_SERVER_URL`: The base URL (**without the leading /**) to the backend. In development, you can set it in
-  `.env.development` file. The `.env` file must stay at `/api`, because we are using a Nginx reverse proxy on production.
+  `.env.development` file. The `.env` file must stay at `/api`, because we are using a Nginx reverse proxy on production. You have to specify the
+  port, otherwise nginx will mess up. A correct example is: `https://til-backend.35.190.222.151.sslip.io:443`.
 
 ## Features
 
