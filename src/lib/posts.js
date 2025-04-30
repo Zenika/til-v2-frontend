@@ -18,9 +18,15 @@ let eventSrc;
 
 currentUser.subscribe((newUser) => {
 	if (newUser.id !== '') {
-		retrievedPages = 0;
 		posts.set([]);
-		selectedTags.set(newUser.automatic_tags_filter);
+		if(newUser.automatic_tags_filter) {
+			selectedTags.set(newUser.automatic_tags_filter);
+		} else {
+			totalPages = 1;
+			retrievedPages = 0;
+			getNextPage()
+		}
+
 	}
 });
 

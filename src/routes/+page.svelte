@@ -11,12 +11,6 @@
 	let cardList = $state();
 	let tagsInSelector = $state([]); // Component is quite old so we have to add a compatibility layer. Not perfect, but it works.
 
-	currentUser.subscribe(e => {
-		if (e && e.id !== '') {
-			tagsInSelector = e.automatic_tags_filter;
-		}
-	});
-
 	selectedTags.subscribe(newTags => {
 		tagsInSelector = newTags;
 	})
