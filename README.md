@@ -4,8 +4,6 @@ TIL is a simple software that aim to enable article and reflexion-sharing across
 acts as an aggregator (as
 daily.dev can do), but on-premises and with filters on content to avoid being spammed with news that don't interest us.
 
-**This project is currently Work in progress**.
-
 ## Getting started
 
 ### Developer tools
