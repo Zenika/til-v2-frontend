@@ -10,12 +10,14 @@
 
     let personalTags = $state([]);
 
+    let feedUrlBase = `${PUBLIC_TIL_SERVER_URL.startsWith('http') ? `${PUBLIC_TIL_SERVER_URL}/rss?key=` : `${window.location.protocol}//${window.location.host}/api/rss?key=`}`;
+
     currentUser.subscribe(e => {
         personalTags = e.automatic_tags_filter
     })
 
     function copyRssToClipBoard() {
-        navigator.clipboard.writeText(`${PUBLIC_TIL_SERVER_URL}/rss?key=${$currentUser.feed_key}`)
+        navigator.clipboard.writeText(`${feedUrlBase}${$currentUser.feed_key}`)
         toast.success(get(t)('clipboard.copied'), {
             position: "top-right"
         });
@@ -37,7 +39,7 @@
     <hr>
     <h1>{$t('profile.rss_feed.title')}</h1>
     <p>{$t('profile.rss_feed.description')}</p>
-    <p><code>{PUBLIC_TIL_SERVER_URL}/rss?key={$currentUser.feed_key}</code> <i class="fa-solid fa-copy link" onclick={copyRssToClipBoard}></i></p>
+    <p><code>{feedUrlBase}{$currentUser.feed_key}</code> <i class="fa-solid fa-copy link" onclick={copyRssToClipBoard}></i></p>
     <p>{$t('profile.rss_feed.tags_manual')} <code>&tags=tag1,tag2,[...]</code>.</p>
 
     <div class="alert">
